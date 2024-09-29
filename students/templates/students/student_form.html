@@ -1,43 +1,66 @@
 {% extends 'students/base.html' %}
 
 {% block title %}
-    {% if student %}
+    {% if student.pk %}
         Edit Student
     {% else %}
-        Add New Student
+        Add a New Student
     {% endif %}
 {% endblock %}
 
 {% block content %}
-    <h1 class="mb-4">{% if student %}Edit Student{% else %}Add a New Student{% endif %}</h1>
-    
-    <form method="POST">
+    <h1 class="mb-4">
+        {% if student.pk %}
+            Edit Student
+        {% else %}
+            Add a New Student
+        {% endif %}
+    </h1>
+    <form method="POST" class="needs-validation" novalidate>
         {% csrf_token %}
         <div class="mb-3">
-            <label for="first_name">First Name:</label>
-            <input type="text" name="first_name" id="first_name" class="form-control" value="{% if student %}{{ student.first_name }}{% endif %}">
+            {{ form.first_name.label_tag }}
+            {{ form.first_name }}  
+            {% if form.first_name.errors %}
+                <div class="text-danger">{{ form.first_name.errors }}</div>
+            {% endif %}
         </div>
         <div class="mb-3">
-            <label for="last_name">Last Name:</label>
-            <input type="text" name="last_name" id="last_name" class="form-control" value="{% if student %}{{ student.last_name }}{% endif %}">
+            {{ form.last_name.label_tag }}
+            {{ form.last_name }}  
+            {% if form.last_name.errors %}
+                <div class="text-danger">{{ form.last_name.errors }}</div>
+            {% endif %}
         </div>
         <div class="mb-3">
-            <label for="email">Email:</label>
-            <input type="email" name="email" id="email" class="form-control" value="{% if student %}{{ student.email }}{% endif %}">
+            {{ form.email.label_tag }}
+            {{ form.email }}  
+            {% if form.email.errors %}
+                <div class="text-danger">{{ form.email.errors }}</div>
+            {% endif %}
         </div>
         <div class="mb-3">
-            <label for="date_of_birth">Date of Birth:</label>
-            <input type="date" name="date_of_birth" id="date_of_birth" class="form-control" value="{% if student %}{{ student.date_of_birth }}{% endif %}">
+            {{ form.date_of_birth.label_tag }}
+            <input type="date" name="date_of_birth" value="{{ student.date_of_birth|date:'Y-m-d' }}" class="form-control" required>
+            {% if form.date_of_birth.errors %}
+                <div class="text-danger">{{ form.date_of_birth.errors }}</div>
+            {% endif %}
         </div>
         <div class="mb-3">
-            <label for="enrollment_date">Enrollment Date:</label>
-            <input type="date" name="enrollment_date" id="enrollment_date" class="form-control" value="{% if student %}{{ student.enrollment_date }}{% endif %}">
+            {{ form.enrollment_date.label_tag }}
+            <input type="date" name="enrollment_date" value="{{ student.enrollment_date|date:'Y-m-d' }}" class="form-control" required>
+            {% if form.enrollment_date.errors %}
+                <div class="text-danger">{{ form.enrollment_date.errors }}</div>
+            {% endif %}
         </div>
         <div class="mb-3">
-            <label for="grade">Grade:</label>
-            <input type="number" name="grade" id="grade" class="form-control" value="{% if student %}{{ student.grade }}{% endif %}">
+            {{ form.grade.label_tag }}
+            {{ form.grade }}  
+            {% if form.grade.errors %}
+                <div class="text-danger">{{ form.grade.errors }}</div>
+            {% endif %}
         </div>
-        <button type="submit" class="btn btn-success">{% if student %}Save Changes{% else %}Save{% endif %}</button>
+        <button type="submit" class="btn btn-success">Save</button>
         <a href="{% url 'student_list' %}" class="btn btn-secondary">Cancel</a>
     </form>
 {% endblock %}

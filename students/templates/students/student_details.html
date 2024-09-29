@@ -3,13 +3,15 @@
 {% block title %}{{ student.first_name }} {{ student.last_name }}{% endblock %}
 
 {% block content %}
-    <h1 class="mb-4">{{ student.first_name }} {{ student.last_name }}</h1>
-    <ul class="list-group">
-        <li class="list-group-item"><strong>Email:</strong> {{ student.email }}</li>
-        <li class="list-group-item"><strong>Date of Birth:</strong> {{ student.date_of_birth }}</li>
-        <li class="list-group-item"><strong>Enrollment Date:</strong> {{ student.enrollment_date }}</li>
-        <li class="list-group-item"><strong>Grade:</strong> {{ student.grade }}</li>
-    </ul>
-    <a href="{% url 'student_edit' student.pk %}" class="btn btn-warning mt-3">Edit</a>
-    <a href="{% url 'student_list' %}" class="btn btn-secondary mt-3">Back to List</a>
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">{{ student.first_name }} {{ student.last_name }}</h2>
+            <p class="card-text"><strong>Email:</strong> {{ student.email }}</p>
+            <p class="card-text"><strong>Date of Birth:</strong> {{ student.date_of_birth }}</p>
+            <p class="card-text"><strong>Enrollment Date:</strong> {{ student.enrollment_date }}</p>
+            <p class="card-text"><strong>Grade:</strong> {{ student.grade }}</p>
+            <a href="{% url 'student_edit' student.pk %}" class="btn btn-warning">Edit Student</a>
+            <a href="{% url 'student_list' %}" class="btn btn-secondary">Back to All Students</a>
+        </div>
+    </div>
 {% endblock %}

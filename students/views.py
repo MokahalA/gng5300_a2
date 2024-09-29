@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Student
-
+from .forms import StudentForm
 
 # List all students
 def student_list(request):
@@ -14,16 +14,23 @@ def student_details(request, pk):
 
 # Add a new student
 def student_create(request):
-    # Placeholder for adding a new student form logic
     if request.method == 'POST':
-        # Form submission logic will be handled here
-        pass
-    return render(request, 'students/student_form.html')  # Template for adding a student
+        form = StudentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('student_list')
+    else:
+        form = StudentForm()
+    return render(request, 'students/student_form.html', {'form': form})
 
 # Edit an existing student
 def student_edit(request, pk):
     student = get_object_or_404(Student, pk=pk)
     if request.method == 'POST':
-        # Form submission logic will be handled here
-        pass
-    return render(request, 'students/student_form.html', {'student': student})  # Pass the student object to the template
+        form = StudentForm(request.POST, instance=student)
+        if form.is_valid():
+            form.save()
+            return redirect('student_details', pk=student.pk)
+    else:
+        form = StudentForm(instance=student)
+    return render(request, 'students/student_form.html', {'form': form, 'student': student})
