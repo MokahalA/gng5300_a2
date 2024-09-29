@@ -1,0 +1,15 @@
+{% extends 'students/base.html' %}
+
+{% block title %}{{ student.first_name }} {{ student.last_name }}{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">{{ student.first_name }} {{ student.last_name }}</h1>
+    <ul class="list-group">
+        <li class="list-group-item"><strong>Email:</strong> {{ student.email }}</li>
+        <li class="list-group-item"><strong>Date of Birth:</strong> {{ student.date_of_birth }}</li>
+        <li class="list-group-item"><strong>Enrollment Date:</strong> {{ student.enrollment_date }}</li>
+        <li class="list-group-item"><strong>Grade:</strong> {{ student.grade }}</li>
+    </ul>
+    <a href="{% url 'student_edit' student.pk %}" class="btn btn-warning mt-3">Edit</a>
+    <a href="{% url 'student_list' %}" class="btn btn-secondary mt-3">Back to List</a>
+{% endblock %}
