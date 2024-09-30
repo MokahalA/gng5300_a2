@@ -22,9 +22,17 @@ def custom_logout(request):
 
 # List all students
 def student_list(request):
-    students = Student.objects.all()
-    return render(request, 'students/student_list.html', {'students': students})
+    query = request.GET.get('q', '')  # Get the search query, default to empty string
+    if query:
+        students = Student.objects.filter(
+            first_name__icontains=query
+        ) | Student.objects.filter(
+            last_name__icontains=query
+        )
+    else:
+        students = Student.objects.all()
 
+    return render(request, 'students/student_list.html', {'students': students, 'query': query})
 
 # Display a single student's details
 def student_details(request, pk):
