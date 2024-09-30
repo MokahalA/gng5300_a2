@@ -1,66 +1,63 @@
 {% extends 'students/base.html' %}
 
-{% block title %}
-    {% if student.pk %}
-        Edit Student
-    {% else %}
-        Add a New Student
-    {% endif %}
-{% endblock %}
+{% block title %}{{ form.instance.pk|yesno:"Edit Student,Add a New Student" }}{% endblock %}
 
 {% block content %}
-    <h1 class="mb-4">
-        {% if student.pk %}
-            Edit Student
-        {% else %}
-            Add a New Student
-        {% endif %}
-    </h1>
-    <form method="POST" class="needs-validation" novalidate>
+    <h1>{{ form.instance.pk|yesno:"Edit Student,Add a New Student" }}</h1>
+    
+    <form method="POST">
         {% csrf_token %}
+        
         <div class="mb-3">
             {{ form.first_name.label_tag }}
-            {{ form.first_name }}  
+            {{ form.first_name }}
             {% if form.first_name.errors %}
                 <div class="text-danger">{{ form.first_name.errors }}</div>
             {% endif %}
         </div>
+        
         <div class="mb-3">
             {{ form.last_name.label_tag }}
-            {{ form.last_name }}  
+            {{ form.last_name }}
             {% if form.last_name.errors %}
                 <div class="text-danger">{{ form.last_name.errors }}</div>
             {% endif %}
         </div>
+
         <div class="mb-3">
             {{ form.email.label_tag }}
-            {{ form.email }}  
+            {{ form.email }}
             {% if form.email.errors %}
                 <div class="text-danger">{{ form.email.errors }}</div>
             {% endif %}
         </div>
+
         <div class="mb-3">
             {{ form.date_of_birth.label_tag }}
-            <input type="date" name="date_of_birth" value="{{ student.date_of_birth|date:'Y-m-d' }}" class="form-control" required>
+            {{ form.date_of_birth }}  <!-- This will now be a date picker -->
             {% if form.date_of_birth.errors %}
                 <div class="text-danger">{{ form.date_of_birth.errors }}</div>
             {% endif %}
         </div>
+
         <div class="mb-3">
             {{ form.enrollment_date.label_tag }}
-            <input type="date" name="enrollment_date" value="{{ student.enrollment_date|date:'Y-m-d' }}" class="form-control" required>
+            {{ form.enrollment_date }}  <!-- This will now be a date picker -->
             {% if form.enrollment_date.errors %}
                 <div class="text-danger">{{ form.enrollment_date.errors }}</div>
             {% endif %}
         </div>
+
         <div class="mb-3">
             {{ form.grade.label_tag }}
-            {{ form.grade }}  
+            {{ form.grade }}
             {% if form.grade.errors %}
                 <div class="text-danger">{{ form.grade.errors }}</div>
             {% endif %}
         </div>
+
         <button type="submit" class="btn btn-success">Save</button>
         <a href="{% url 'student_list' %}" class="btn btn-secondary">Cancel</a>
     </form>
+    
 {% endblock %}

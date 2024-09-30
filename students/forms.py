@@ -5,6 +5,10 @@ class StudentForm(forms.ModelForm):
     class Meta:
         model = Student
         fields = ['first_name', 'last_name', 'email', 'date_of_birth', 'enrollment_date', 'grade']
+        widgets = {
+            'date_of_birth': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'enrollment_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        }
 
     def __init__(self, *args, **kwargs):
         super(StudentForm, self).__init__(*args, **kwargs)
