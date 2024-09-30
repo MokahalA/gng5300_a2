@@ -5,6 +5,10 @@
 {% block content %}
     <h1 class="mb-4">List of Students</h1>
 
+    {% if not user.is_authenticated %}
+        <p class="text-danger"><em>You must login to add, edit, or delete student records.</em></p>
+    {% endif %}
+
     <!-- Search Bar -->
     <form method="GET" action="{% url 'student_list' %}" class="mb-4">
         <div class="input-group">
@@ -44,9 +48,28 @@
         </tbody>
     </table>
 
+    <!-- Add New Student Button -->
     {% if user.is_authenticated %}
-        <a href="{% url 'student_create' %}" class="btn btn-primary">Add New Student</a>
-    {% else %}
-        <p><em>You must log in to add, edit, or delete student records.</em></p>
+        <a href="{% url 'student_create' %}" class="btn btn-primary mb-4">Add New Student</a>
     {% endif %}
+
+    <!-- Pagination Controls -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if students.has_previous %}
+                <a href="?page=1&q={{ query }}" class="btn btn-light">First</a>
+                <a href="?page={{ students.previous_page_number }}&q={{ query }}" class="btn btn-light">Previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ students.number }} of {{ students.paginator.num_pages }}.
+            </span>
+
+            {% if students.has_next %}
+                <a href="?page={{ students.next_page_number }}&q={{ query }}" class="btn btn-light">Next</a>
+                <a href="?page={{ students.paginator.num_pages }}&q={{ query }}" class="btn btn-light">Last</a>
+            {% endif %}
+        </span>
+    </div>
+
 {% endblock %}

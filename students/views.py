@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from .models import Student
 from .forms import StudentForm
 from django.contrib.auth.decorators import login_required
-
+from django.core.paginator import Paginator
 
 # Custom login view to redirect after login
 class CustomLoginView(LoginView):
@@ -22,17 +22,27 @@ def custom_logout(request):
 
 # List all students
 def student_list(request):
-    query = request.GET.get('q', '')  # Get the search query, default to empty string
+    query = request.GET.get('q', '')
+    students = Student.objects.all()
+
+    # Filter students based on the search query
     if query:
-        students = Student.objects.filter(
+        students = students.filter(
             first_name__icontains=query
-        ) | Student.objects.filter(
+        ) | students.filter(
             last_name__icontains=query
         )
-    else:
-        students = Student.objects.all()
 
-    return render(request, 'students/student_list.html', {'students': students, 'query': query})
+    # Implement pagination
+    paginator = Paginator(students, 10) 
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'students': page_obj,
+        'query': query,
+    }
+    return render(request, 'students/student_list.html', context)
 
 # Display a single student's details
 def student_details(request, pk):
