@@ -23,6 +23,8 @@ def custom_logout(request):
 # List all students
 def student_list(request):
     query = request.GET.get('q', '')
+    
+    # Start with all students, then filter based on the search query
     students = Student.objects.all()
 
     # Filter students based on the search query
@@ -33,8 +35,11 @@ def student_list(request):
             last_name__icontains=query
         )
 
+    # Order the students by first name for consistency
+    students = students.order_by('first_name')
+
     # Implement pagination
-    paginator = Paginator(students, 10) 
+    paginator = Paginator(students, 10)  # Show 10 students per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
